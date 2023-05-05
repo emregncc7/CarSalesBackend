@@ -66,8 +66,7 @@ namespace WebAPI
                        ValidIssuer = tokenOptions.Issuer,
                        ValidAudience = tokenOptions.Audience,
                        ValidateIssuerSigningKey = true,
-                       IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
-                   };
+                       IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)                   };
                });
             services.AddDependencyResolvers(new ICoreModule[] {
             new CoreModule()});

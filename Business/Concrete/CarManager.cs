@@ -9,6 +9,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -49,7 +50,7 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 12)
+            if (DateTime.Now.Hour == 16)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
@@ -134,6 +135,11 @@ namespace Business.Concrete
             }
             Add(car);
             return null;
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_CarDal.GetCarDetails(c => c.CarId == id));
         }
     }
 }

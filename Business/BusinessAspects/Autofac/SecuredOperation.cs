@@ -6,6 +6,7 @@ using Castle.DynamicProxy;
 using Core.Extensions;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
+using Core.Utilities.Result;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +24,7 @@ namespace Business.BusinessAspects.Autofac
 
         }
 
-        protected override void OnBefore(IInvocation invocation)
+        protected override  void  OnBefore(IInvocation invocation)
         {
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
             foreach (var role in _roles)

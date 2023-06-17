@@ -17,7 +17,7 @@ namespace DataAccess.Concrete.EntityFramework
         //{
         //    using(CarListsContext context = new CarListsContext())
         //    {
-        //        var result = from c in context.Cars
+        //       vv var result = from c in context.Cars
         //                     join co in context.Colors
         //                     on c.ColorId equals co.ColorId
         //                     join b in context.Brands

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{3521C3FF-4F8A-464D-BDE1-AAF5E76FFD1C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{B9EC1F08-D09A-4C54-B00B-6B1249E36762}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "WebApplication1\test.csproj", "{B9EC1F08-D09A-4C54-B00B-6B1249E36762}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

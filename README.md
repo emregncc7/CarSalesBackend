@@ -1,59 +1,74 @@
-# Car Sales Backend Project
+# 🚗 Car Sales Backend Project 🚀
 
-This is a .NET Core backend project for a car sales application, built using N-tier architecture principles.
+This is a **.NET Core** backend project for a car sales application, built using **N-tier architecture** principles.  
 
-## Project Structure
+---
 
-The solution consists of several layers:
+## 📂 Project Structure  
 
-- **Core**: Contains common utilities and base classes used across the project
-- **Entities**: Contains domain models and DTOs
-- **DataAccess**: Handles data persistence using Entity Framework Core
-- **Business**: Contains business logic and validation rules
-- **WebAPI**: REST API endpoints for the application
-- **ConsoleUI**: Console application for testing purposes
+The solution consists of several layers:  
 
-## Technologies Used
+- 🔹 **Core**: Common utilities and base classes used across the project  
+- 🔹 **Entities**: Domain models and DTOs  
+- 🔹 **DataAccess**: Handles data persistence using **Entity Framework Core**  
+- 🔹 **Business**: Business logic and validation rules  
+- 🔹 **WebAPI**: 🚀 REST API endpoints for the application  
+- 🔹 **ConsoleUI**: 🖥️ Console application for testing  
 
-- .NET Core
-- Entity Framework Core
-- RESTful API
-- N-tier Architecture
-- SOLID Principles
+---
 
-## Getting Started
+## 🛠️ Technologies Used  
 
-1. Clone the repository
-2. Open the solution in Visual Studio
-3. Update the connection string in `WebAPI/appsettings.json`
-4. Run the following commands in Package Manager Console:
-   ```
-   Update-Database
-   ```
-5. Build and run the WebAPI project
+✅ .NET Core  
+✅ Entity Framework Core  
+✅ RESTful API  
+✅ N-tier Architecture  
+✅ SOLID Principles  
 
-## Project Layers
+---
 
-### Core Layer
-Contains base classes, utilities, and cross-cutting concerns that are used throughout the application.
+## 🚀 Getting Started  
 
-### Entities Layer
-Contains the domain models and DTOs (Data Transfer Objects) used in the application.
+Follow these steps to set up the project:  
 
-### DataAccess Layer
-Implements data access using Entity Framework Core, including:
-- Database context
-- Entity configurations
-- Repository implementations
+1️⃣ **Clone the repository**  
+2️⃣ **Open the solution** in Visual Studio  
+3️⃣ **Update the connection string** in `WebAPI/appsettings.json`  
+4️⃣ **Run the following command** in the Package Manager Console:  
+5️⃣ **Build and run** the WebAPI project  
 
-### Business Layer
-Contains business logic, including:
-- Managers/Services
-- Validation rules
-- Business rules
+---
 
-### WebAPI Layer
-Provides REST API endpoints for:
-- Car operations
-- User operations
-- Authentication/Authorization 
+## 📌 Project Layers  
+
+### 🏗️ Core Layer  
+Contains base classes, utilities, and cross-cutting concerns used throughout the application.  
+
+### 📦 Entities Layer  
+Contains domain models and DTOs (**Data Transfer Objects**).  
+
+### 🗄️ DataAccess Layer  
+Handles database operations using **Entity Framework Core**, including:  
+- Database context  
+- Entity configurations  
+- Repository implementations  
+
+### ⚙️ Business Layer  
+Handles business logic, including:  
+- Services/Managers  
+- Validation rules  
+- Business rules  
+
+### 🌐 WebAPI Layer  
+Provides **REST API** endpoints for:  
+- 🚗 Car operations  
+- 👤 User operations  
+- 🔐 Authentication/Authorization  
+
+---
+
+## 👥 Developer  
+
+- 👨‍💻 **Emre Genç**  
+  - 🔗 LinkedIn: [emregenc7](https://www.linkedin.com/in/emregenc7/)  
+

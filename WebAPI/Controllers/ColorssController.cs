@@ -11,11 +11,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColorssController : ControllerBase
+    public class ColorsController : ControllerBase
     {
         IColorService _colorService;
 
-        public ColorssController(IColorService colorService)
+        public ColorsController(IColorService colorService)
         {
             _colorService = colorService;
         }
@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("add")]
-        public IActionResult Add(Colors colors)
+        public IActionResult Add(Color color)
         {
-            var result = _colorService.Add(colors);
+            var result = _colorService.Add(color);
             if (result.Success)
             {
                 return Ok(result);

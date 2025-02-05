@@ -10,12 +10,12 @@ namespace Business.ValidationRules.FluentValidation
     {
         public CarValidator()
         {
-            RuleFor(p => p.CarName).NotEmpty();
-            RuleFor(p => p.CarName).MinimumLength(2);
-            RuleFor(p => p.DailyPrice).NotEmpty();
-            RuleFor(p => p.DailyPrice).GreaterThan(0);
-            RuleFor(p => p.DailyPrice).GreaterThanOrEqualTo(10).When(p => p.BrandId == 1);
-           RuleFor(p => p.CarName).Must(NotStartWithĞ).WithMessage("Ürünler ğ harfi ile başlamamalı");
+            RuleFor(p => p.Name).NotEmpty();
+            RuleFor(p => p.Name).MinimumLength(2);
+            RuleFor(p => p.Price).NotEmpty();
+            RuleFor(p => p.Price).GreaterThan(0);
+            RuleFor(p => p.Price).GreaterThanOrEqualTo(10).When(p => p.BrandId == 1);
+            RuleFor(p => p.Name).Must(NotStartWithĞ).WithMessage("Ürünler ğ harfi ile başlamamalı");
         }
         private bool NotStartWithĞ(string arg)
         {

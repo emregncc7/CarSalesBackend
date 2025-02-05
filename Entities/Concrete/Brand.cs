@@ -1,15 +1,24 @@
 ﻿using Core.Entities;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Entities.Concrete
 {
-   public class Brand : IEntity
+    public class Brand : IEntity
     {
         [Key]
-        public int BrandId { get; set; }
-        public string BrandName { get; set; }
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [StringLength(500)]
+        public string LogoUrl { get; set; }
+
+        [StringLength(1000)]
+        public string Description { get; set; }
+
+        public virtual ICollection<Car> Cars { get; set; }
     }
 }

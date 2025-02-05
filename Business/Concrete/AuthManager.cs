@@ -5,6 +5,8 @@ using Core.Utilities.Result;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Entities.DTOs;
+using System;
+using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -30,7 +32,11 @@ namespace Business.Concrete
                 LastName = userForRegisterDto.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true
+                Role = string.IsNullOrEmpty(userForRegisterDto.Role) ? "User" : 
+                       userForRegisterDto.Role.ToLower() == "admin" ? "Admin" : "User",
+                IsActive = true,
+                Status = "Active",
+                CreatedAt = DateTime.UtcNow
             };
             _userService.Add(user);
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
@@ -64,6 +70,13 @@ namespace Business.Concrete
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);
+            if (claims == null)
+            {
+                claims = new List<OperationClaim>
+                {
+                    new OperationClaim { Id = 1, Name = user.Role }
+                };
+            }
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }

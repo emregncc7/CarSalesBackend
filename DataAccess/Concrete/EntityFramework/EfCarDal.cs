@@ -11,62 +11,57 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfEntityRepositoryBase<Car, CarListsContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, CarSalesContext>, ICarDal
     {
-        //public List<CarDetailDto> GetCarDetails()
-        //{
-        //    using(CarListsContext context = new CarListsContext())
-        //    {
-        //       vv var result = from c in context.Cars
-        //                     join co in context.Colors
-        //                     on c.ColorId equals co.ColorId
-        //                     join b in context.Brands
-        //                     on c.BrandId equals b.BrandId
-                            
-                           
-        //                     select new CarDetailDto
-        //                     {
-        //                         CarId = c.CarId,
-        //                         BrandId = b.BrandId,
-        //                         BrandName = b.BrandName,
-        //                         ColorId = c.ColorId,
-        //                         ColorName = co.ColorName,
-        //                         CarName = c.CarName,
-        //                         DailyPrice = c.DailyPrice,                         
-        //                     };
-        //        return result.ToList();
-        //    }
-        //}
+        public List<CarDetailDto> GetCarDetails()
+        {
+            using (CarSalesContext context = new CarSalesContext())
+            {
+                var result = from c in context.Cars
+                            join b in context.Brands
+                            on c.BrandId equals b.Id
+                            join co in context.Colors
+                            on c.ColorId equals co.Id
+                            select new CarDetailDto
+                            {
+                                CarId = c.Id,
+                                BrandName = b.Name,
+                                ColorName = co.Name,
+                                DailyPrice = c.DailyPrice,
+                                Description = c.Description,
+                                ModelYear = c.ModelYear.ToString()
+                            };
+                return result.ToList();
+            }
+        }
 
         public List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
         {
-            using (CarListsContext context = new CarListsContext())
+            using (CarSalesContext context = new CarSalesContext())
             {
                 var result = from d in context.Cars
                              join b in context.Brands
-                             on d.CarId equals b.BrandId
+                             on d.BrandId equals b.Id
                              join c in context.Colors
-                             on d.ColorId equals c.ColorId
+                             on d.ColorId equals c.Id
                              join i in context.CarImages
-                             on d.CarId equals i.CarId
-
+                             on d.Id equals i.CarId
                              select new CarDetailDto
                              {
-                                 CarId = d.CarId,
+                                 CarId = d.Id,
                                  Description = d.Description,
-                                 BrandName = b.BrandName,
-                                 ColorName = c.ColorName,
-                                 ModelYear = d.ModelYear,
+                                 BrandName = b.Name,
+                                 ColorName = c.Name,
+                                 ModelYear = d.ModelYear.ToString(),
                                  DailyPrice = d.DailyPrice,
-                                 BrandId = b.BrandId,
-                                 ColorId = c.ColorId,
-                                 CarName = d.CarName,
+                                 BrandId = b.Id,
+                                 ColorId = c.Id,
+                                 CarName = d.Name,
                                  ImagePath = i.ImagePath,
                                  Email = d.Email,
                                  Telephone = d.Telephone,      
                                  Instagram = d.Instagram
                              };
-
 
                 if (filter == null)
                 {

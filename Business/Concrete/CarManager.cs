@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -30,30 +31,127 @@ namespace Business.Concrete
             _brandService = brandService;
         }
 
+        public async Task<IDataResult<List<Car>>> GetAllAsync(int? brandId = null, int? colorId = null)
+        {
+            try
+            {
+                var query = _CarDal.GetAll();
+
+                if (brandId.HasValue)
+                    query = query.Where(c => c.BrandId == brandId.Value).ToList();
+
+                if (colorId.HasValue)
+                    query = query.Where(c => c.ColorId == colorId.Value).ToList();
+
+                return await Task.FromResult(new SuccessDataResult<List<Car>>(query, Messages.ProductListed));
+            }
+            catch (Exception ex)
+            {
+                return new ErrorDataResult<List<Car>>($"Araçlar listelenirken bir hata oluştu: {ex.Message}");
+            }
+        }
+
+        public async Task<IDataResult<Car>> GetByIdAsync(int carId)
+        {
+            try
+            {
+                var car = _CarDal.Get(c => c.Id == carId);
+                if (car == null)
+                    return new ErrorDataResult<Car>(Messages.CarNotFound);
+
+                return await Task.FromResult(new SuccessDataResult<Car>(car));
+            }
+            catch (Exception ex)
+            {
+                return new ErrorDataResult<Car>($"Araç getirilirken bir hata oluştu: {ex.Message}");
+            }
+        }
+
+        public async Task<IResult> AddAsync(Car car)
+        {
+            try
+            {
+                IResult result = BusinessRules.Run(
+                    CheckIfCarNameExists(car.Name),
+                    CheckIfProductCountOfCategoryCorrect(car.BrandId),
+                    CheckIfBrandLimitExceded()
+                );
+
+                if (result != null)
+                    return result;
+
+                _CarDal.Add(car);
+                return await Task.FromResult(new SuccessResult(Messages.CarAdded));
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = ex.InnerException != null 
+                    ? $"Araç eklenirken bir hata oluştu: {ex.Message} - İç Hata: {ex.InnerException.Message}"
+                    : $"Araç eklenirken bir hata oluştu: {ex.Message}";
+                return new ErrorResult(errorMessage);
+            }
+        }
+
+        public async Task<IResult> UpdateAsync(Car car)
+        {
+            try
+            {
+                var existingCar = _CarDal.Get(c => c.Id == car.Id);
+                if (existingCar == null)
+                    return new ErrorResult(Messages.CarNotFound);
+
+                _CarDal.Update(car);
+                return await Task.FromResult(new SuccessResult(Messages.CarUpdated));
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult($"Araç güncellenirken bir hata oluştu: {ex.Message}");
+            }
+        }
+
+        public async Task<IResult> DeleteAsync(int id)
+        {
+            try
+            {
+                var car = _CarDal.Get(c => c.Id == id);
+                if (car == null)
+                    return new ErrorResult(Messages.CarNotFound);
+
+                _CarDal.Delete(car);
+                return await Task.FromResult(new SuccessResult(Messages.CarDeleted));
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult($"Araç silinirken bir hata oluştu: {ex.Message}");
+            }
+        }
+
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
-            //business kodları
-            IResult result = BusinessRules.Run(CheckIfCarNameExists(car.CarName),
-                 CheckIfProductCountOfCategoryCorrect(car.BrandId), CheckIfBrandLimitExceded());
-
-            if (result != null)
+            try
             {
-                return result;
-            }
-            _CarDal.Add(car);
-            return new SuccessResult(Messages.CarAdded);
+                //business kodları
+                IResult result = BusinessRules.Run(CheckIfCarNameExists(car.Name),
+                     CheckIfProductCountOfCategoryCorrect(car.BrandId), CheckIfBrandLimitExceded());
 
+                if (result != null)
+                {
+                    return result;
+                }
+                _CarDal.Add(car);
+                return new SuccessResult(Messages.CarAdded);
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult($"Araç eklenirken bir hata oluştu: {ex.Message}");
+            }
         }
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 16)
-            {
-                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
-            }
             return new SuccessDataResult<List<Car>>(_CarDal.GetAll(), Messages.ProductListed);
         }
 
@@ -70,12 +168,12 @@ namespace Business.Concrete
 
         public IDataResult<Car> GetById(int carId)
         {
-            return new SuccessDataResult<Car>(_CarDal.Get(p => p.CarId == carId));
+            return new SuccessDataResult<Car>(_CarDal.Get(p => p.Id == carId));
         }
 
         public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
         {
-            return new SuccessDataResult<List<Car>>(_CarDal.GetAll(p => p.DailyPrice >= min && p.DailyPrice <= max));
+            return new SuccessDataResult<List<Car>>(_CarDal.GetAll(p => p.Price >= min && p.Price <= max));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -108,7 +206,7 @@ namespace Business.Concrete
         }
         private IResult CheckIfCarNameExists(string carName)
         {
-            var result = _CarDal.GetAll(p => p.CarName == carName).Any();
+            var result = _CarDal.GetAll(p => p.Name == carName).Any();
             if (result)
             {
                 return new ErrorResult(Messages.CarNameAlreadyExists);
@@ -129,7 +227,7 @@ namespace Business.Concrete
         public IResult AddTransactionalTest(Car car)
         {
             Add(car);
-            if (car.DailyPrice < 10 )
+            if (car.Price < 10)
             {
                 throw new Exception("");
             }

@@ -21,6 +21,8 @@ namespace Business.Constants
         public static string CarCountOfCategoryError = "Bir kategoride en fazla 10 araç olabilir.";
         public static string BrandLimitExceded = "Marka limiti aşıldığı için yeni ürün eklenemiyor";
         public static string CarImagesListed = "Car image listed";
-
+        public static string CarNotFound = "Araç bulunamadı";
+        public static string CarUpdated = "Araç güncellendi";
+        public static string CarDeleted = "Araç silindi";
     }
 }

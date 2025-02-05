@@ -12,31 +12,30 @@ namespace Business.Concrete
 {
     public class RentalManager : IRentalService
     {
-        IRantelDal _rantelDal;
-        public RentalManager(IRantelDal rantelDal)
+        IRentalDal _rentalDal;
+        public RentalManager(IRentalDal rentalDal)
         {
-            _rantelDal = rantelDal;
+            _rentalDal = rentalDal;
         }
         public IResult Add(Rental rental)
         {
-
-            _rantelDal.Add(rental);
+            _rentalDal.Add(rental);
             return new SuccessResult(Messages.CarAdded);
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rantelDal.GetAll(), Messages.ProductListed);
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.ProductListed);
         }
 
         public IDataResult<Rental> GetById(int rentalId)
         {
-            return new SuccessDataResult<Rental>(_rantelDal.Get(c => c.Id == rentalId));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(c => c.Id == rentalId));
         }
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rantelDal.GetRentalDetails());
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
         }
     }
 }
